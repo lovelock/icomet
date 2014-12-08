@@ -1,8 +1,8 @@
 /*
-Copyright (c) 2012-2014 The icomet Authors. All rights reserved.
-Use of this source code is governed by a BSD-style license that can be
-found in the LICENSE file.
-*/
+   Copyright (c) 2012-2014 The icomet Authors. All rights reserved.
+   Use of this source code is governed by a BSD-style license that can be
+   found in the LICENSE file.
+   */
 #ifndef ICOMET_PRESENCE_H
 #define ICOMET_PRESENCE_H
 
@@ -12,18 +12,21 @@ found in the LICENSE file.
 class Server;
 
 enum PresenceType{
-	PresenceOffline = 0,
-	PresenceOnline  = 1
+    PresenceOffline    = 0,
+    PresenceOnline     = 1,
+    PresenceBackground = 2, // background
+    PresenceBusy       = 3, // busy
+    PresenceDND        = 4  // Do not disturb
 };
 
 class PresenceSubscriber
 {
-public:
-	PresenceSubscriber *prev;
-	PresenceSubscriber *next;
+    public:
+        PresenceSubscriber *prev;
+        PresenceSubscriber *next;
 
-	Server *serv;
-	struct evhttp_request *req;
+        Server *serv;
+        struct evhttp_request *req;
 };
 
 #endif

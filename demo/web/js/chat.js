@@ -29,14 +29,16 @@ var EmoticonAdv = {
 };
 
 //bind mouse out event to automatically close the menu
-$(function () {
-	$("#emoticonDropDown").bind("mouseleave", function () {
-		EmoticonAdv.hideDropDown();
-	});
-	$("#emoticonDropDown *").click(function (event) {
-		event.stopPropagation(); //this is needed to prevent the reply area to collapse on click outside it
-	});
-});
+/*
+ * $(function () {
+ *     $("#emoticonDropDown").bind("mouseleave", function () {
+ *         EmoticonAdv.hideDropDown();
+ *     });
+ *     $("#emoticonDropDown *").click(function (event) {
+ *         event.stopPropagation(); //this is needed to prevent the reply area to collapse on click outside it
+ *     });
+ * });
+ */
 
 var emoticons = [{
 		pattern : ["-_-;"],
@@ -330,7 +332,7 @@ function send() {
 	$('#errors').html('');
 
 	addmsg(uid, nickname, content, true);
-	
+
 	var msg = {
 		'uid' : uid,
 		'nickname' : nickname,

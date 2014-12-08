@@ -43,7 +43,7 @@ void Subscriber::start(){
 		evbuffer_add_printf(buf, "%s\n", iframe_header.c_str());
 		evhttp_send_reply_chunk(this->req, buf);
 	}
-	
+
 	// send buffered messages
 	if(this->seq_next == 0){
 		this->seq_next = channel->seq_next;
@@ -108,7 +108,7 @@ void Subscriber::noop(){
 
 void Subscriber::send_chunk(int seq, const char *type, const char *content){
 	struct evbuffer *buf = evhttp_request_get_output_buffer(this->req);
-	
+
 	if(this->type == POLL){
 		if(!this->callback.empty()){
 			evbuffer_add_printf(buf, "%s(", this->callback.c_str());
@@ -116,7 +116,7 @@ void Subscriber::send_chunk(int seq, const char *type, const char *content){
 	}else if(this->type == IFRAME){
 		evbuffer_add_printf(buf, "%s", iframe_chunk_prefix.c_str());
 	}
-	
+
 	evbuffer_add_printf(buf,
 		"{\"type\":\"%s\",\"cname\":\"%s\",\"seq\":%d,\"content\":\"%s\"}",
 		type, this->channel->name.c_str(), seq, content);
@@ -140,13 +140,13 @@ void Subscriber::send_chunk(int seq, const char *type, const char *content){
 
 void Subscriber::send_error_reply(int sub_type, struct evhttp_request *req, const char *cb, const std::string &cname, const char *type, const char *content){
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
-	
+
 	if(sub_type == POLL){
 		evbuffer_add_printf(buf, "%s(", cb);
 	}else if(sub_type == IFRAME){
 		evbuffer_add_printf(buf, "%s", iframe_chunk_prefix.c_str());
 	}
-	
+
 	evbuffer_add_printf(buf,
 		"{\"type\":\"%s\",\"cname\":\"%s\",\"seq\":%d,\"content\":\"%s\"}",
 		type, cname.c_str(), 0, content);

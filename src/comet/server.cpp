@@ -68,12 +68,12 @@ Channel* Server::new_channel(const std::string &cname){
 	channel->serv = this;
 	channel->name = cname;
 	channel->create_token();
-	
+
 	add_presence(PresenceOnline, channel->name);
 
 	used_channels.push_back(channel);
 	cname_channels[channel->name] = channel;
-	
+
 	return channel;
 }
 
@@ -228,7 +228,7 @@ int Server::sub(struct evhttp_request *req, Subscriber::Type sub_type){
 		Subscriber::send_error_reply(sub_type, req, cb, cname, "429", "Too many subscribers");
 		return 0;
 	}
-	
+
 	if(channel->idle < ServerConfig::channel_idles){
 		channel->idle = ServerConfig::channel_idles;
 	}
@@ -240,7 +240,7 @@ int Server::sub(struct evhttp_request *req, Subscriber::Type sub_type){
 	sub->seq_next = seq;
 	sub->seq_noop = noop;
 	sub->callback = cb;
-	
+
 	channel->add_subscriber(sub);
 	subscribers ++;
 	sub->start();
@@ -270,12 +270,12 @@ int Server::pub(struct evhttp_request *req, bool encoded){
 		evhttp_send_reply(req, 405, "Invalid Method", NULL);
 		return 0;
 	}
-	
+
 	HttpQuery query(req);
 	const char *cb = query.get_str("cb", NULL);
 	std::string cname = query.get_str("cname", "");
 	const char *content = query.get_str("content", "");
-	
+
 	Channel *channel = NULL;
 	channel = this->get_channel_by_name(cname);
 	if(!channel){
@@ -299,7 +299,7 @@ int Server::pub(struct evhttp_request *req, bool encoded){
 	log_debug("%s:%d pub %s, seq: %d, subs: %d, content: %s",
 		req->remote_host, req->remote_port,
 		channel->name.c_str(), channel->seq_next, channel->subs.size, content);
-		
+
 	// response to publisher
 	evhttp_add_header(req->output_headers, "Content-Type", "text/javascript; charset=utf-8");
 	struct evbuffer * buf = evhttp_request_get_output_buffer(req);
@@ -328,10 +328,10 @@ int Server::broadcast(struct evhttp_request *req){
 		evhttp_send_reply(req, 405, "Invalid Method", NULL);
 		return 0;
 	}
-	
+
 	HttpQuery query(req);
 	const char *content = query.get_str("content", "");
-	
+
 	LinkedList<Channel *>::Iterator it = used_channels.iterator();
 	while(Channel *channel = it.next()){
 		if(channel->idle < ServerConfig::channel_idles){
@@ -356,11 +356,11 @@ int Server::sign(struct evhttp_request *req){
 	if(expires <= 0){
 		expires = ServerConfig::channel_timeout;
 	}
-	
+
 	Channel *channel = this->get_channel_by_name(cname);
 	if(!channel){
 		channel = this->new_channel(cname);
-	}	
+	}
 	if(!channel){
 		evhttp_send_reply(req, 429, "Too Many Channels", NULL);
 		return 0;
@@ -412,13 +412,13 @@ int Server::close(struct evhttp_request *req){
 		return 0;
 	}
 	log_debug("close channel: %s, subs: %d", cname.c_str(), channel->subs.size);
-		
+
 	// response to publisher
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);
 	evbuffer_add_printf(buf, "ok %d\n", channel->seq_next);
 	evhttp_send_reply(req, 200, "OK", buf);
-	
+
 	channel->close();
 	this->free_channel(channel);
 
@@ -438,7 +438,7 @@ int Server::clear(struct evhttp_request *req){
 		return 0;
 	}
 	log_debug("clear channel: %s, subs: %d", cname.c_str(), channel->subs.size);
-		
+
 	// response to publisher
 	evhttp_add_header(req->output_headers, "Content-Type", "text/html; charset=utf-8");
 	struct evbuffer *buf = evhttp_request_get_output_buffer(req);

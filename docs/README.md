@@ -35,11 +35,13 @@ __Long-polling__
 	icomet_cb([{type: "data", cname: "a", seq: "1", content: "a"}]);
 	icomet_cb({type: "data", cname: "a", seq: "1", content: "a"});
 
+    // 当频道中存在缓冲的消息，响应是第一个，函数的参数是一个消息对象的数组
 When there are buffered messages attached with the channel, the response is as the first one, the parameter of the function call is an array of message objects.
+    // 当一个新消息到达，响应是第二个，函数的参数是消息对象。
 
 When a new message arrives, the response is as the second one, the parameter of the function call is the message object.
-
-Since the response if received, the request if finished, client must send another request.
+// 收到响应后，请求结束，客户端需要发送另外一个请求。
+Since the response is received, the request is finished, client must send another request.
 
 __Forever iframe__
 
