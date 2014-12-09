@@ -14,7 +14,7 @@ class Server;
 enum PresenceType{
     PresenceOffline    = 0,
     PresenceOnline     = 1,
-    PresenceBackground = 2, // background
+    PresenceDaemon     = 2, // background
     PresenceBusy       = 3, // busy
     PresenceDND        = 4  // Do not disturb
 };
