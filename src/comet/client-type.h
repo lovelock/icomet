@@ -8,8 +8,11 @@
 #define ICOMET_CLIENT_H
 
 enum ClientType {
-    Android  = 0,
-    iOS = 1,
-    Web = 2,
-    H5 = 4
+    A_FK  = 0,
+    A_FD  = 1,
+    i_FK  = 2,
+    i_FD  = 3,
+    Web   = 4,
+    H5_FK = 5,
+    H5_FD = 6
 };
