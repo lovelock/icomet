@@ -15,4 +15,5 @@ enum ClientType {
     Web   = 4,
     H5_FK = 5,
     H5_FD = 6
-};
+;
+#endif
